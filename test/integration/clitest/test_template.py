@@ -1,5 +1,5 @@
-from example import TemplateControl
-from test.integration.clitest.cli import CLITest
+from omero_cli_template import TemplateControl
+from omero.testlib.cli import CLITest
 import pytest
 
 arguments = ["test", "123", "bla"]

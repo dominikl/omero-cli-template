@@ -1,54 +1,24 @@
-import sys
-from omero.cli import BaseControl, CLI
-from omero.gateway import BlitzGateway
 
-HELP = """This is just an example CLI plugin."""
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-
-class TemplateControl(BaseControl):
-    """
-    Example OMERO CLI Plugin
-    """
-
-    def _configure(self, parser):
-        # add the default login arguments to the command line parser
-        parser.add_login_arguments()
-
-        # add some arguments
-        parser.add_argument(
-            "test",
-            help="This is a mandatory, positional argument")
-        parser.add_argument(
-            "--flag", action="store_true",
-            help="This is an optional flag")
-
-        # set the entry method which is called when this
-        # plugin is executed
-        parser.set_defaults(func=self.__call__)
-
-    def __call__(self, args):
-        try:
-            # connect to the OMERO server
-            client = self.ctx.conn(args)
-
-            # use the BlitzGateway to interact with the server
-            gateway = BlitzGateway(client_obj=client)
-            userId = gateway.getUserId()
-
-            self.ctx.out("test was %s" % args.test)
-            self.ctx.out("--flag was %s" % args.flag)
-            self.ctx.out("And my user ID is %s" % userId)
-        except Exception, e:
-            self.ctx.err('ERROR: %s' % e)
-            self.ctx.die(1, "Connection failed")
+# Copyright (C) 2018 University of Dundee & Open Microscopy Environment.
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-try:
-    # Register the plugin with the CLI under the given name,
-    # so one can call it with: bin/omero template ...
-    register("template", TemplateControl, HELP)
-except NameError:
-    if __name__ == "__main__":
-        cli = CLI()
-        cli.register("template", TemplateControl, HELP)
-        cli.invoke(sys.argv[1:])
+from omero_cli_template import TemplateControl, HELP
+register("template", TemplateControl, HELP)
