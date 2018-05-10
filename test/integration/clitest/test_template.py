@@ -1,4 +1,4 @@
-from example import TemplateControl
+from template import TemplateControl
 from test.integration.clitest.cli import CLITest
 import pytest
 
